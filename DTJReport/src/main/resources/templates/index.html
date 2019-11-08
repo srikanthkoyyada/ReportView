@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<title>Reports</title>
+<link rel="stylesheet" href="webjars/bootstrap/3.3.6/css/bootstrap.min.css">
+<link rel="stylesheet" href="webjars/bootstrap-datepicker/1.6.1/css/bootstrap-datepicker.min.css">
+<link rel="stylesheet" href="webjars/jquery-ui/1.12.1/jquery-ui.min.css">
+
+<style type="text/css">
+ 
+.table-responsive {
+    max-height: 450px;
+    overflow: scroll;
+} 
+
+</style>
+
+</head>
+
+<body>
+	<div class="container">
+		<div class="row">
+
+			<div class="col-md-12">
+
+				<div class="panel panel-success panel-table">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col col-xs-12">
+								<h3 class="panel-title">Daily Transaction Journal</h3>
+								<hr>
+							</div>
+							<div class="col col-md-12">
+							 <label class="control-label col-md-1" for="level">Level*</label>
+						      <div class="col-md-3">          
+						        <select class="form-control" name="level" id="level">
+								<option value="0">ALL</option>
+								</select>
+						      </div>
+						       <label class="control-label col-md-2" for="trans type">Transaction Type*</label>
+						      <div class="col-md-3">          
+						       <select class="form-control" name="trans_type" id="trans_type">
+								<option value="ALL">ALL</option>
+								</select>
+						      </div>
+						      
+						      </div>
+						     <div class="col col-md-12" style="margin-top: 10px;">
+						      <label class="control-label col-md-2" for="begin date">Begin Date</label>
+						      <div class="col-md-3">          
+						       <input type="text" name="begin_date" class="form-control date" id="begin_date" required="required">
+						      </div>
+						      </div>
+						      <div class="col col-md-12" style="margin-top: 10px;">
+						       <label class="control-label col-md-2" for="end type">End Date</label>
+						      <div class="col-md-3">          
+						       <input type="text" name="end_date" class="form-control date" id="end_date" required="required">
+						      </div>
+							  <button type="button" class="btn btn-sm btn-default" id="report_preview" data-loading-text="Please wait..">Preview</button>
+							  <button type="button" class="btn btn-sm btn-default export_report" id="report_csv" data-loading-text="Downloading..">Export TO Excel</button>
+								  <button type ="button" class="btn btn-sm btn-default" id="table_print_full" data-loading-text="Preparing Print..">Print</button>
+							</div>
+						</div>
+					</div>
+					<div class="panel-body">
+						<div class=" table-responsive">
+						<div align="right" style="margin-bottom: 10px;">
+						<button class="btn btn-primary" id="table_print">Print Page</button>
+						
+						</div>
+						<table
+							class="table table-striped table-bordered table-list table-condensed" id="table_data">
+							<thead>
+								<tr bgcolor="#708090">
+								   <th class="col-xs-3">Store Nbr</th>
+								   <th class="col-xs-3">Drawer Nbr</th>
+								   <th class="col-xs-3">Date and Time</th>
+								   <th class="col-xs-3">Customer Nbr</th>
+								   <th class="col-xs-3">Customer Name</th>
+								   <th class="col-xs-3">Loan Nbr</th>
+								   <th class="col-xs-3">Tran Nbr</th>
+								   <th class="col-xs-3">Check Nbr</td>
+								   <th class="col-xs-3">Issuing Check Amt</th>
+								   <th class="col-xs-3">Tran Amt</th>
+								   <th class="col-xs-3">Principal Amt</th>
+								   <th class="col-xs-3">Fee Amt</th>
+								   <th class="col-xs-3">Interest Amt</th>
+								   <th class="col-xs-3">NSF Fee Amt</th>
+								   <th class="col-xs-3">Orig Fee Amt</th>
+								   <th class="col-xs-3">Late Fee Amt</th>
+								   <th class="col-xs-3">Other Fee Amt</th>
+								   <th class="col-xs-3">Waive Fee Amt</th>
+								   <th class="col-xs-3">Lien Fee Amt</th>
+								   <th class="col-xs-3">Waive Lien Fee Amt</th>
+								   <th class="col-xs-3">Repo Fee Amt</th>
+								   <th class="col-xs-3">Sale Fee Amt</th>
+								   <th class="col-xs-3">Cash Amt</th>
+								   <th class="col-xs-3">Check Amt</th>
+								   <th class="col-xs-3">CC/MO Amt</th>
+								   <th class="col-xs-3">Debit Card Amt</th>
+								   <th class="col-xs-3">ACH Amt</th>
+								   <th class="col-xs-3">Prepaid Card</th>
+								   <th class="col-xs-3">RCC amt</th>
+								   <th class="col-xs-3">Emp Nbr</th>
+								   <th class="col-xs-3">Emp Name</th>
+								   <th class="col-xs-3">Loan Type</th>
+								   <th class="col-xs-3">Void Flag</th>
+								   <th class="col-xs-3">Collateral Type</th>
+								    <th class="col-xs-3">Orig Store Nbr</th>
+								   <th class="col-xs-3">Payment Plan Fee</th>
+								   <th class="col-xs-3">MHC Fee Amt</th>
+								</tr>
+							</thead>
+
+							<tbody id="trans_body">
+
+							</tbody>
+						</table>
+						</div>
+					</div>
+					<div class="panel-footer">
+						<div class="row">
+
+							<div class="col col-xs-8">
+							<div style="float: right;">
+									<ul class="pagination pagination-sm"></ul>
+								</div></div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+			
+			<table	class="table table-striped table-bordered table-list table-condensed hide" id="full_table_data">
+							<thead>
+								<tr>
+								<th class="col-xs-3">Store Nbr</th>
+							   <th class="col-xs-3">Drawer Nbr</th>
+							   <th class="col-xs-3">Date and Time</th>
+							   <th class="col-xs-3">Customer Nbr</th>
+							   <th class="col-xs-3">Customer Name</th>
+							   <th class="col-xs-3">Loan Nbr</th>
+							   <th class="col-xs-3">Tran Nbr</th>
+							   <th class="col-xs-3">Check Nbr</td>
+							   <th class="col-xs-3">Issuing Check Amt</th>
+							   <th class="col-xs-3">Tran Amt</th>
+							   <th class="col-xs-3">Principal Amt</th>
+							   <th class="col-xs-3">Fee Amt</th>
+							   <th class="col-xs-3">Interest Amt</th>
+							   <th class="col-xs-3">NSF Fee Amt</th>
+							   <th class="col-xs-3">Orig Fee Amt</th>
+							   <th class="col-xs-3">Late Fee Amt</th>
+							   <th class="col-xs-3">Other Fee Amt</th>
+							   <th class="col-xs-3">Waive Fee Amt</th>
+							   <th class="col-xs-3">Lien Fee Amt</th>
+							   <th class="col-xs-3">Waive Lien Fee Amt</th>
+							   <th class="col-xs-3">Repo Fee Amt</th>
+							   <th class="col-xs-3">Sale Fee Amt</th>
+							   <th class="col-xs-3">Cash Amt</th>
+							   <th class="col-xs-3">Check Amt</th>
+							   <th class="col-xs-3">CC/MO Amt</th>
+							   <th class="col-xs-3">Debit Card Amt</th>
+							   <th class="col-xs-3">ACH Amt</th>
+							   <th class="col-xs-3">Prepaid Card</th>
+							   <th class="col-xs-3">RCC amt</th>
+							   <th class="col-xs-3">Emp Nbr</th>
+							   <th class="col-xs-3">Emp Name</th>
+							   <th class="col-xs-3">Loan Type</th>
+							   <th class="col-xs-3">Void Flag</th>
+							   <th class="col-xs-3">Collateral Type</th>
+							    <th class="col-xs-3">Orig Store Nbr</th>
+							   <th class="col-xs-3">Payment Plan Fee</th>
+							   <th class="col-xs-3">MHC Fee Amt</th>
+								</tr>
+							</thead>
+
+							<tbody id="trans_body_full">
+
+							</tbody>
+						</table>
+						
+</body>
+<script	type="text/javascript" src="webjars/jquery/2.2.4/jquery.min.js"></script>
+<script	type="text/javascript" src="webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script	type="text/javascript" src="webjars/bootstrap-datepicker/1.6.1/js/bootstrap-datepicker.min.js"></script>
+<script src="/js/jquery.twbsPagination.js"></script>
+<script src="/js/jstorage.min.js"></script>
+<script	type="text/javascript" src="webjars/pdfmake/0.1.36/build/pdfmake.js"></script>
+<script	type="text/javascript" src="webjars/pdfmake/0.1.36/build/vfs_fonts.js"></script>
+<script	type="text/javascript" src="/js/print.min.js"></script>
+<script	type="text/javascript" src="/js/browser.js"></script>
+<script	type="text/javascript" src="/js/jspdf.min.js"></script>
+<script	type="text/javascript" src="/js/jspdf.plugin.autotable.js"></script>
+<script	type="text/javascript" src="/js/split_text_to_size.js"></script>
+<script	type="text/javascript" src="/js/standard_fonts_metrics.js"></script>
+<script	type="text/javascript" src="/js/es6-promise.js"></script>
+<script	type="text/javascript" src="/js/es6-promise.auto.min.js"></script>
+<script type="text/javascript">
+
+$(document).ready( function () {
+	$('.date').datepicker({
+		changeMonth: true,
+	    changeYear: true,
+		format:'mm/dd/yyyy'
+	});
+	$('.date').on('changeDate', function(ev){
+	    $(this).datepicker('hide');
+	});
+	
+	$(".panel-body,.panel-footer").hide();
+	function validateFilters(){
+		if($('#begin_date').val().length ==0 || $('#end_date').val().length ==0)
+		{
+			alert('Please select date range to preview data');
+			return false;
+		}else
+			{
+			return true;
+			}
+	}
+	$("#report_preview").click(function(){
+		
+		if(validateFilters()){
+			$.jStorage.flush();
+		  loadTransactions(1);
+		  $(".panel-body,.panel-footer").show();
+		}
+		  
+	})
+	function buildPagination(totlaPages){
+		$('.pagination').twbsPagination('destroy');
+ 	$('.pagination').twbsPagination({
+		totalPages: totlaPages,
+		// the current page that show on start
+		startPage: 1,
+
+		// maximum visible pages
+		visiblePages: 5,
+
+		initiateStartPageClick: false,
+
+		// template for pagination links
+		href: false,
+
+		// variable name in href template for page number
+		hrefVariable: '{{number}}',
+
+		// Text labels
+		first: 'first',
+		prev: 'prev',
+		next: 'next',
+		last: 'last	',
+
+		// carousel-style pagination
+		loop: false,
+
+		// callback function
+		onPageClick: function (event, page) {
+		console.log('on page click'+page);
+			
+		  loadTransactions($("li[class='page active'] a").text());
+		 
+		},
+
+		// pagination Classes
+		paginationClass: 'pagination',
+		nextClass: 'next',
+		prevClass: 'prev',
+		lastClass: 'last',
+		firstClass: 'first',
+		pageClass: 'page',
+		activeClass: 'active',
+		disabledClass: 'disabled'
+
+		});
+}
+	
+	
+	function loadTransactions(pageNumber) {
+	      var tr;
+	      var limit=1000;
+	      var totalCountFlag='N';
+	      var offset=(pageNumber*limit)-limit; 
+	      console.log(offset+'::'+limit)
+	      var cachedData=$.jStorage.get(pageNumber);
+	       if(cachedData){
+	    	  $('#trans_body').html('');
+	    	  $.each(cachedData, function(i,tran){
+			   		
+			   		tr = $('<tr/>');
+			   		tr.append("<td class='col-xs-3'>"+tran.store+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.drawer_code+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.dttrandate+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.custnbr+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.name+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.lc_code+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.transaction_number+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.bo_check_num+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.issuing_check_amount+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.tran_amt+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.principal+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.fees+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.interestfee+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.nsfamt+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.orig_fee+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.late_fee_charged+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.other_fee+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.waived_fee_amt+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.lien_fee+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.waive_lien_fee+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.repo_fee+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.sale_fee+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.cashamt+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.checkamt+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.ccmoamt+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.debitcardamt+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.ach_amt+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.prepaidcard_amt+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.rcc_fee+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.emp_number+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.empname+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.type+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.void_flag+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.collateral_type+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.orig_store_number+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.ppf_fee+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.mhc_fee+ "</td>");
+			   		
+		            $('#trans_body').append(tr);
+			    	}); 
+		  }else{
+			  if(pageNumber==1)
+				  totalCountFlag='Y';
+	      $.ajax({
+	    	  	type:'POST',
+				url:"http://localhost:8084/api-auth/report/dailyTrans/getTransJournal",
+				data:JSON.stringify( {'level':$("#level").val(),
+					  'transType':$("#trans_type").val(),
+					  'beginDate':$("#begin_date").val(),
+					  'endDate':$("#end_date").val(),
+					  'limit':limit,
+					  'offset':offset,
+					  'totalCountFlag':totalCountFlag
+					}),
+				dataType:'json',
+				contentType:'application/json',
+				cache:false,
+			    beforeSend:function(xhr){
+			    	xhr.setRequestHeader ("Authorization", "Basic " + btoa('user' + ":" + 'password'));
+			    	 $('#trans_body').html('');
+			    	 $('#trans_body').html('<p>Loading data.Please wait..</p>');
+			    	 //isDataLoading=true;
+			    	 	$("#report_preview").button('loading');
+			    },
+			    success:function(response){
+			    	console.log(response.length);
+			    	$.jStorage.set(pageNumber,response); 
+			    	var totalRecords;
+			    	 $('#trans_body').html('');
+			   	$.each(response, function(i,tran){
+			   		
+			   		tr = $('<tr/>');
+			   		tr.append("<td class='col-xs-3'>"+tran.store+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.drawer_code+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.dttrandate+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.custnbr+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.name+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.lc_code+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.transaction_number+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.bo_check_num+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.issuing_check_amount+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.tran_amt+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.principal+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.fees+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.interestfee+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.nsfamt+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.orig_fee+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.late_fee_charged+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.other_fee+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.waived_fee_amt+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.lien_fee+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.waive_lien_fee+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.repo_fee+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.sale_fee+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.cashamt+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.checkamt+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.ccmoamt+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.debitcardamt+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.ach_amt+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.prepaidcard_amt+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.rcc_fee+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.emp_number+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.empname+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.type+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.void_flag+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.collateral_type+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.orig_store_number+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.ppf_fee+ "</td>");
+			   		tr.append("<td class='col-xs-3'>"+tran.mhc_fee+ "</td>");
+			   		
+		            $('#trans_body').append(tr);
+		            totalRecords=tran.v_count;
+			    	}); 
+			   	if(pageNumber==1){
+			   	var totalPages=(Math.floor(totalRecords/1000))+(totalRecords%1000>0?1:0);
+			   	console.log(totalRecords+'::'+Math.floor(totalRecords/1000)+'::'+(totalRecords%1000>0?1:0)+'::'+totalPages);
+			   	buildPagination(totalPages);
+			   	}	
+			    },
+			    complete:function(){
+			    	//isDataLoading=false;
+			    	
+			    		$("#report_preview").button('reset');
+			    }
+			});
+		  }
+	      
+	}
+	
+	$('.export_report').click(function(){
+		if(validateFilters()){
+			ele_id=$(this).attr("id");
+		 $.ajax({
+	    	  	type:'POST',
+				url:"http://localhost:8084/api-auth/report/dailyTrans/getTransJournal",
+				data:JSON.stringify( {'level':$("#level").val(),
+					  'transType':$("#trans_type").val(),
+					  'beginDate':$("#begin_date").val(),
+					  'endDate':$("#end_date").val(),
+					  'limit':0,
+					  'offset':0
+					}),
+				dataType:'json',
+				contentType:'application/json',
+				cache:false,
+			    beforeSend:function(xhr){
+			    	xhr.setRequestHeader ("Authorization", "Basic " + btoa('user' + ":" + 'password'));
+			    	$('#'+ele_id).button('loading');
+			    	
+			    },
+			    success:function(response){
+			    	if(ele_id=='report_csv')
+			    	DownloadJsonDataAsCSV(response,'dtj_report',true);
+			    	
+			   
+			    },
+			    complete:function(){
+			    	$('#'+ele_id).button('reset');
+			    }
+			});
+		}
+	});
+	
+	function DownloadJsonDataAsCSV(JSONData, FileTitle, ShowLabel) {
+	    //If JSONData is not an object then JSON.parse will parse the JSON string in an Object
+	    var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
+	    var CSV = '';
+	    //This condition will generate the Label/Header
+	    if (ShowLabel) {
+	      var row = "";
+	      //This loop will extract the label from 1st index of on array
+	      for (var index in arrData[0]) {
+	        //Now convert each value to string and comma-seprated
+	        row += index + ',';
+	      }
+	      row = row.slice(0, -1);
+	      //append Label row with line break
+	      CSV += row + '\r\n';
+	    }
+	    //1st loop is to extract each row
+	    for (var i = 0; i < arrData.length; i++) {
+	      var row = "";
+	      //2nd loop will extract each column and convert it in string comma-seprated
+	      for (var index in arrData[i]) {
+	        row += '"' + arrData[i][index] + '",';
+	      }
+	      row.slice(0, row.length - 1);
+	      //add a line break after each row
+	      CSV += row + '\r\n';
+	    }
+	    console.log();
+	    if (CSV == '') {
+	      alert("Invalid data");
+	      return;
+	    }
+	    //Generate a file name
+	    var filename = FileTitle +'_'+ (new Date())+ ".csv";
+	    var blob = new Blob([CSV], {
+	      type: 'text/csv;charset=utf-8;'
+	    });
+	    if (navigator.msSaveBlob) { // IE 10+
+	      navigator.msSaveBlob(blob, filename);
+	    } else {
+	      var link = document.createElement("a");
+	      if (link.download !== undefined) { // feature detection
+	        // Browsers that support HTML5 download attribute
+	        var url = URL.createObjectURL(blob);
+	        link.setAttribute("href", url);
+	        link.style = "visibility:hidden";
+	        link.download = filename ;
+	        document.body.appendChild(link);
+	        
+	        link.click();
+	        document.body.removeChild(link);
+	      }
+	    }
+	  }
+	
+	
+	$('#table_print').click(function(){
+		var divToPrint=document.getElementById("table_data");
+        newWin= window.open();
+        newWin.document.write(divToPrint.outerHTML);
+        newWin.document.close();
+        newWin.focus();
+        newWin.print();
+        newWin.close();
+        
+	});
+	$('#table_print_full').click(function(){
+		var tablesids=[];	
+		 $.ajax({
+	    	  	type:'POST',
+				url:"http://localhost:8084/api-auth/report/dailyTrans/getTransJournal",
+				data:JSON.stringify( {'level':$("#level").val(),
+					  'transType':$("#trans_type").val(),
+					  'beginDate':$("#begin_date").val(),
+					  'endDate':$("#end_date").val(),
+					  'limit':0,
+					  'offset':0
+					}),
+				dataType:'json',
+				contentType:'application/json',
+				cache:false,
+			    beforeSend:function(xhr){
+			    	xhr.setRequestHeader ("Authorization", "Basic " + btoa('user' + ":" + 'password'));
+			    	$('#table_print_full').button('loading');
+			    	
+			    },
+			    success:function(response){
+			    	 $('#trans_body_full').html('');
+					   	$.each(response, function(i,tran){
+					   		
+					   		tr = $('<tr/>');
+					   		tr.append("<td class='col-xs-3'>"+tran.store+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.drawer_code+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.dttrandate+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.custnbr+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.name+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.lc_code+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.transaction_number+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.bo_check_num+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.issuing_check_amount+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.tran_amt+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.principal+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.fees+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.interestfee+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.nsfamt+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.orig_fee+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.late_fee_charged+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.other_fee+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.waived_fee_amt+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.lien_fee+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.waive_lien_fee+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.repo_fee+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.sale_fee+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.cashamt+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.checkamt+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.ccmoamt+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.debitcardamt+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.ach_amt+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.prepaidcard_amt+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.rcc_fee+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.emp_number+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.empname+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.type+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.void_flag+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.collateral_type+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.orig_store_number+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.ppf_fee+ "</td>");
+					   		tr.append("<td class='col-xs-3'>"+tran.mhc_fee+ "</td>");
+					   		
+				            $('#trans_body_full').append(tr);
+					    	});  
+					   
+					   	tablesids=splitTables($('#full_table_data'),9,[]);
+			    },
+			    complete:function(){
+				    	var doc = new jsPDF();
+					for(var i=tablesids.length-1;i>=0;i--){
+						console.log(tablesids[i]);
+					doc.autoTable({html:tablesids[i]});
+					
+					} 
+					doc.autoPrint(); 
+					 doc.save('trans.pdf');
+				
+					
+					
+   		        $('#table_print_full').button('reset');
+			    }
+			});
+		
+	});
+	
+	
+	
+	//split table into smaller tables
+	function range(start, end) {
+		  var array = new Array();
+		  for (var i = start; i <= end; i++) {
+		    array.push(i);
+		  }
+		  return array;
+		}
+
+		function splitTables($tables, chunkSize, fixCols) {
+		  $table = $($tables);
+		  //console.log('fixCols :', fixCols);
+		  fixCols = fixCols || [];
+		  //console.log('fixCols :', fixCols);
+		  fixCols = fixCols.sort();
+		 // console.log('fixCols :', fixCols);
+		  //chunkSize -= fixCols.length;
+		  var rowLength = $('tr:first>*', $table).length;
+		 // console.log('total length:', rowLength);
+		  var n = Math.ceil(rowLength / chunkSize);
+		  var bufferTables = [];
+		  var numberList = range(1, rowLength);
+
+		  for (var i = 1; i <= n; i++) {
+		    var colList = fixCols.slice(0);
+		    //console.log('fixCols :',fixCols);
+		    //console.log('colList :',colList);
+		    console.log('numberList :', numberList);
+		    while (colList.length < chunkSize && numberList.length > 0) {
+		      var index = numberList.shift();
+		     // console.log(index, colList);
+		      if (colList.indexOf(index) == -1) {
+		        colList.push(index);
+		      }
+		    }
+
+		   // console.log('col list:', colList);
+		    var $newTable = $table.clone(true)
+		    for (var index = 1;
+		      (index <= rowLength); index++) {
+		      if (colList.indexOf(index) == -1) {
+		       // console.log('removing:', index);
+		        $('tr>:nth-child(' + index + ')', $newTable).hide();
+		      }
+		      
+		    }
+		    
+		    bufferTables.push($newTable)
+		  }
+			var tableids=[];
+		  $(bufferTables.reverse()).each(function(i, $el) {
+			  $el.attr('id','table_data_'+i);
+			  
+		    $('<p style="page-break-before: always"></p>').insertAfter($table);
+		    $el.insertAfter($table);
+		    tableids.push('#table_data_'+i);
+		  });
+		  $table.remove();
+			return tableids;
+		}
+ });
+</script>
+</html>
