@@ -75,8 +75,8 @@
 		</dependency>
 		<dependency>
 		    <groupId>org.webjars.bower</groupId>
-		    <artifactId>pdfmake</artifactId>
-		    <version>0.1.36</version>
+		    <artifactId>fontawesome</artifactId>
+		    <version>4.7.0</version>
 		</dependency>
 		
 		
