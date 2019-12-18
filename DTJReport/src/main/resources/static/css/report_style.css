@@ -1,0 +1,180 @@
+.address
+{
+FONT-SIZE: 7pt;
+COLOR: black; 
+FONT-FAMILY: Arial;
+LETTER-SPACING: -0.2pt;
+}
+.address1
+{
+FONT-SIZE: 8pt;
+COLOR: black; 
+FONT-FAMILY: Arial;
+LETTER-SPACING: -0.2pt;
+}
+.addressrpt
+{
+FONT-SIZE: 7pt;
+COLOR: white; 
+FONT-FAMILY: Arial;
+LETTER-SPACING: -0.2pt;
+}
+.Titlebold
+{
+FONT-SIZE: 13pt;
+COLOR: black; 
+FONT-FAMILY: Arial;
+LETTER-SPACING: -0.2pt; 
+FONT-WEIGHT:bolder;
+}
+.Titlesmall
+{
+FONT-SIZE: 9pt;
+COLOR: black; 
+FONT-FAMILY: Arial;
+LETTER-SPACING: -0.2pt; 
+FONT-WEIGHT:bolder;
+}
+.titlesNormal
+{
+FONT-SIZE: 9pt;
+COLOR: black; 
+FONT-FAMILY: Arial;
+LETTER-SPACING: -0.2pt; 
+FONT-WEIGHT:bolder;
+}
+
+.Titlesmallrpt
+{
+FONT-SIZE: 8pt;
+COLOR: black; 
+FONT-FAMILY: Arial;
+LETTER-SPACING: -0.2pt; 
+FONT-WEIGHT:bolder;
+
+}
+.Titleboldrpt
+{
+FONT-SIZE: 13pt;
+COLOR: black; 
+FONT-FAMILY: Arial;
+LETTER-SPACING: -0.2pt; 
+FONT-WEIGHT:bolder;
+}
+.rptdata
+{
+FONT-SIZE: 7pt;
+COLOR: black; 
+FONT-FAMILY: Arial;
+LETTER-SPACING: -0.2pt; 
+}
+.normalRptData
+{
+	font-size:12px; 
+	color:#000;
+}
+.total
+{
+FONT-SIZE: 8pt;
+COLOR: black; 
+FONT-FAMILY: Arial;
+LETTER-SPACING: -0.2pt; 
+FONT-WEIGHT:bolder;
+}
+.sign
+{
+FONT-SIZE: 7pt;
+COLOR: black; 
+FONT-FAMILY: Arial;
+LETTER-SPACING: -0.2pt; 
+FONT-WEIGHT:bolder;
+}
+.sign1
+{
+FONT-SIZE: 7pt;
+COLOR: white; 
+FONT-FAMILY: Arial;
+LETTER-SPACING: -0.2pt; 
+FONT-WEIGHT:bolder;
+}
+.signrpt
+{
+FONT-SIZE: 9pt;
+COLOR: white; 
+FONT-FAMILY: Arial;
+LETTER-SPACING: -0.2pt; 
+FONT-WEIGHT:bolder;
+}
+.textreq
+{
+FONT-SIZE: 7pt;
+COLOR: black; 
+FONT-FAMILY: Arial;
+LETTER-SPACING: -0.2pt; 
+FONT-WEIGHT:bolder;
+font-style:italic;
+}
+.textreqrpt
+{
+FONT-SIZE: 7pt;
+COLOR: white; 
+FONT-FAMILY: Arial;
+LETTER-SPACING: -0.2pt; 
+FONT-WEIGHT:bolder;
+font-style:italic;
+}
+td
+{ 
+text-align: center;
+
+} 
+div
+{
+text-align: left;
+}
+hr
+{
+size:1px;
+}
+
+.Titlesmall1
+{
+FONT-SIZE: 7pt; 
+COLOR: black; 
+FONT-FAMILY: TimesNewRoman;
+LETTER-SPACING: -0.2pt; 
+FONT-WEIGHT:bolder;
+}
+.rptdata1
+{
+FONT-SIZE: 7pt; 
+COLOR: black; 
+FONT-FAMILY: TimesNewRoman;
+LETTER-SPACING: -0.2pt; 
+}
+.printpage2{
+page-break-after:always;
+}
+.trodd
+{
+	background-color:#e5eef5;
+	font-size: 11px;
+	font-weight: normal;
+}
+.treven
+{
+	background-color:#dbeaf6;
+	font-size: 11px;
+	font-weight: normal;
+}
+.tBorder{
+		 border: 1px solid black;
+}
+.fontChanges
+{
+FONT-SIZE: 9pt;
+COLOR: red; 
+FONT-FAMILY: Arial;
+LETTER-SPACING: -0.2pt; 
+font-weight:800; 
+}

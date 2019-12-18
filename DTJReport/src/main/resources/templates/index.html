@@ -481,7 +481,7 @@ $(document).ready( function () {
 			 }
 	      $.ajax({
 	    	  	type:'POST',
-				url:"http://192.168.2.73:8084/api-auth/report/dailyTrans/getTransJournal",
+				url:"/getTransJournal",
 				data:JSON.stringify( {'level':$("#level").val(),
 					  'transType':$("#trans_type").val(),
 					  'beginDate':$("#begin_date").val(),
@@ -583,10 +583,10 @@ $(document).ready( function () {
 	// export data into excel sheet
 	$('#report_csv').click(function(){
 		if(validateFilters()){
-			/* var newwindow = window.open('http://localhost:8084/api-auth/report/dailyTrans/getTransJournalExcel?startDate='+$("#begin_date").val()+'&endDate='+$("#end_date").val()+'&level='+$("#level").val()+'&transType='+$("#trans_type").val()+'&sortOrder='+$("#sort_order").val()+'&sortColumn='+$("#sort_column").val());
+			/* var newwindow = window.open('/getTransJournalExcel?startDate='+$("#begin_date").val()+'&endDate='+$("#end_date").val()+'&level='+$("#level").val()+'&transType='+$("#trans_type").val()+'&sortOrder='+$("#sort_order").val()+'&sortColumn='+$("#sort_column").val());
 			newwindow.focus();
 			newwindow.onblur = function() {newwindow.close()};"; */
-			var link_href='http://192.168.2.73:8084/api-auth/report/dailyTrans/getTransJournalExcel?startDate='+$("#begin_date").val()+'&endDate='+$("#end_date").val()+'&level='+$("#level").val()+'&transType='+$("#trans_type").val()+'&sortOrder='+$("#sort_order").val()+'&sortColumn='+$("#sort_column").val();
+			var link_href='http://192.168.2.216:8084/api-auth/report/dailyTrans/getTransJournalExcel?startDate='+$("#begin_date").val()+'&endDate='+$("#end_date").val()+'&level='+$("#level").val()+'&transType='+$("#trans_type").val()+'&sortOrder='+$("#sort_order").val()+'&sortColumn='+$("#sort_column").val();
 			$('body').append('<a id="link" href="'+link_href+'" target="_blank">&nbsp;</a>');
 			$('#link')[0].click();
 			console.log("document.cookie::"+document.cookie);
@@ -616,7 +616,7 @@ $(document).ready( function () {
 			var html="";
 			 $.ajax({
 		    	  	type:'POST',
-					url:"http://192.168.2.73:8084/api-auth/report/dailyTrans/printDTJReport",
+					url:"/printDTJReport",
 					data:JSON.stringify( {'level':$("#level").val(),
 						  'transType':$("#trans_type").val(),
 						  'beginDate':$("#begin_date").val(),
